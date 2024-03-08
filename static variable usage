@@ -1,0 +1,29 @@
+
+#include<iostream>
+using namespace std;
+
+class number{
+public:
+static int cnt;
+
+number(){
+cnt++;
+}
+
+void display(){
+cout << "Number of time object called is "<<cnt << endl;
+}
+
+
+};
+
+int  number:: cnt=0;
+
+
+int main()
+{
+number n1,n2,n3;
+
+n1.display();
+    return 0;
+}
