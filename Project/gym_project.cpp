@@ -2,7 +2,7 @@
 #include<conio.h>
 #include<string.h>
 
-class Basic{
+class Person{
 int a;
 public:
 	Basic(){
@@ -14,14 +14,19 @@ public:
 	}
 
 };
-class Derive{
+class Customer{
 public:
 
 };
 
+class Employee{
+public:
+
+};
 
 void main(){
 clrscr();
+
 
 
 
