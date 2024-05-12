@@ -1,22 +1,23 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include<cstdlib>
 using namespace std;
 
-class person
-{static int latest_id;
+class person{
+static int latest_id;
 public:
      int id;
     long long int phone_no;
     string name, address;
 
     static int get_next_id() {
-        return ++latest_id;
+        return rand();
     }
        
     void get_person_data()
     {
-        id = get_next_id();
+        id = rand();
         cout << "Getting Data " << endl
              << endl;
         cout << "Enter the Name " << endl;
@@ -41,7 +42,7 @@ public:
         cout << "Address : " << address << endl;
 
         
-        file << "ID: " << id << ", Name: " << name << ", Phone No: " << phone_no << ", Address: " << address << endl;
+        //file << "ID: " << id << ", Name: " << name << ", Phone No: " << phone_no << ", Address: " << address << endl;
     }
 };
 int person::latest_id=0;
@@ -89,6 +90,7 @@ public:
         default:
             cout << "Enter the Valid Option Packet is not inserted ";
         }
+        cout << "Amount is " << price;
     }
 };
 
@@ -105,6 +107,9 @@ public:
         }
         get_person_data();
         packet_accept();
+        
+        outFile << "ID: " << id << ", Name: " << name << ", Phone No: " << phone_no << ", Address: " << address ;
+        outFile << ", Amount: " << price << endl;
         outFile.close();
     }
 
@@ -116,11 +121,7 @@ public:
             cerr << "Error opening file." << endl;
             exit;
         }
-        put_person_data(outFile);
-        cout << "Amount is " << price;
-
-       
-        outFile << ", Amount: " << price << endl;
+        put_person_data(outFile);   
     }
 
     void show_customer_data()
@@ -228,59 +229,58 @@ class Admin:public Employee{
     }
 
     void admin_only(){
-        string input_name, input_password;
-        cout << "Enter your name: ";
-        cin >> input_name;
-        cout << "Enter your password: ";
-        cin >> input_password;
+     
+    string input_name, input_password;
+    cout << "Enter your name: ";
+    cin >> input_name;
+    cout << "Enter your password: ";
+    cin >> input_password;
 
-        ifstream inFile("Admin_data.txt");
-        if (!inFile) {
-            cerr << "Error opening file." << endl;
-            exit;
-        }
+    ifstream inFile("Admin_data.txt");
+    if (!inFile) {
+        cerr << "Error opening file." << endl;
+        return;
+    }
 
-        string line;
-        while (getline(inFile, line)) {
-            size_t name_pos = line.find("Name: ");
-            if (name_pos != string::npos) {
-                size_t password_pos = line.find(" Password: ");
-                string stored_name = line.substr(name_pos + 6, password_pos - (name_pos + 6));
-                string stored_password = line.substr(password_pos + 11);
-                if (input_name == stored_name && input_password == stored_password) {
-                    cout << "Login successful." << endl;
-                    inFile.close();
+   string line;
+    while (getline(inFile, line)) {
+        size_t pos = line.find(":");
+        if (pos != string::npos) {
+            string storedName = line.substr(6, pos - 6); // Extract stored name
+            string storedPassword = line.substr(pos + 1); // Extract stored password
 
-
-                    exit;
-                }
+            if (input_name == storedName && input_password == storedPassword) {
+                cout << "Welcome, " << input_name << "! Access granted." << endl;
+                return;
             }
         }
-
-        cout << "Invalid name or password." << endl;
-        inFile.close();
-        exit;
     }
+
+    cout << "Access denied. User not found or incorrect credentials." << endl;
+}
+
     
 };
 
 int main()
 {
 
-    // customer c1;
-    // c1.get_customer_data();
+    customer c1;
+     c1.get_customer_data();
     // c1.put_customer_data();
 
-    
+    // c1.show_all_customer_data();
 
-    // c1.show_customer_data();
+    //  c1.show_customer_data();
 
     // Employee e1;
     // e1.get_employee_data();
+
     // e1.put_employee_data();
 
-    Admin a1;
-    a1.admin_only();
+    // Admin a1;
+    // a1.admin_entery();
+    // a1.admin_only();
 
     return 0;
 }
