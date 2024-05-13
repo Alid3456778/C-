@@ -1,20 +1,23 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include<cstdlib>
+#include <cstdlib>
 using namespace std;
 
-class person{
-static int latest_id;
+class person
+{
+    static int latest_id;
+
 public:
-     int id;
+    int id;
     long long int phone_no;
     string name, address;
 
-    static int get_next_id() {
+    static int get_next_id()
+    {
         return rand();
     }
-       
+
     void get_person_data()
     {
         id = rand();
@@ -25,12 +28,12 @@ public:
         cout << "Enter the Phone Number " << endl;
         cin >> phone_no;
         cout << "Enter the Address " << endl;
-        cin.ignore(); 
+        cin.ignore();
         getline(cin, address);
         
     }
 
-    void put_person_data(ofstream &file)
+    void put_person_data()
     {
         cout << endl
              << endl
@@ -41,11 +44,11 @@ public:
         cout << "Phone No : " << phone_no << endl;
         cout << "Address : " << address << endl;
 
-        
-        //file << "ID: " << id << ", Name: " << name << ", Phone No: " << phone_no << ", Address: " << address << endl;
+
+
     }
 };
-int person::latest_id=0;
+int person::latest_id = 0;
 class packet
 {
 public:
@@ -99,7 +102,7 @@ class customer : public person, public packet
 public:
     void get_customer_data()
     {
-        ofstream outFile("customer_data.txt", ios::app); 
+        ofstream outFile("customer_data.txt", ios::app);
         if (!outFile)
         {
             cerr << "Error opening file." << endl;
@@ -107,21 +110,15 @@ public:
         }
         get_person_data();
         packet_accept();
-        
-        outFile << "ID: " << id << ", Name: " << name << ", Phone No: " << phone_no << ", Address: " << address ;
+
+        outFile << "ID: " << id << ", Name: " << name << ", Phone No: " << phone_no << ", Address: " << address;
         outFile << ", Amount: " << price << endl;
         outFile.close();
     }
 
     void put_customer_data()
     {
-                ofstream outFile("customer_data.txt", ios::app); 
-        if (!outFile)
-        {
-            cerr << "Error opening file." << endl;
-            exit;
-        }
-        put_person_data(outFile);   
+        put_person_data();
     }
 
     void show_customer_data()
@@ -177,104 +174,105 @@ class Employee : public customer
 public:
     void get_employee_data()
     {
+        ofstream outFile("employee_data.txt", ios::app);
+        if (!outFile)
+        {
+            cerr << "Error opening file." << endl;
+            exit;
+        }
         get_person_data();
-        save_employee_data();
-    }
-
-    void save_employee_data()
-    {
-        ofstream outFile("employee_data.txt", ios::app); 
-        if (!outFile)
-        {
-            cerr << "Error opening file." << endl;
-            return;
-        }
-
-        outFile.close();
+        outFile << "ID: " << id << ", Name: " << name << ", Phone No: " << phone_no << ", Address: " << address;
         cout << "Employee data saved successfully." << endl;
+        outFile.close();
     }
 
-    void put_employee_data(){
-                ofstream outFile("employee_data.txt", ios::app); 
+
+    void put_employee_data()
+    {
+        ofstream outFile("employee_data.txt", ios::app);
         if (!outFile)
         {
             cerr << "Error opening file." << endl;
             return;
         }
-        put_person_data(outFile);
+        put_person_data();
         outFile.close();
     }
 };
 
-class Admin:public Employee{
-    public:
-    string name,password;
+class Admin : public Employee
+{
+public:
+    string name, password;
 
-    void admin_entery(){
-        cout<<"Enter the Name "<<endl;
-        cin>>name;
-        cout<<"Enter the Password "<<endl;
-        cin>>password;
+    void admin_entery()
+    {
+        cout << "Enter the Name " << endl;
+        cin >> name;
+        cout << "Enter the Password " << endl;
+        cin >> password;
 
-         ofstream outFile("Admin_data.txt", ios::app); 
+        ofstream outFile("Admin_data.txt", ios::app);
         if (!outFile)
         {
             cerr << "Error opening file." << endl;
             return;
         }
-        outFile<<"Name :"<<name<<" Password :"<<password;
+        outFile << "Name :" << name << " Password :" << password;
         outFile.close();
         cout << "Admin data saved successfully." << endl;
-        
     }
 
-    void admin_only(){
-     
-    string input_name, input_password;
-    cout << "Enter your name: ";
-    cin >> input_name;
-    cout << "Enter your password: ";
-    cin >> input_password;
+    void admin_only()
+    {
 
-    ifstream inFile("Admin_data.txt");
-    if (!inFile) {
-        cerr << "Error opening file." << endl;
-        return;
-    }
+        string input_name, input_password;
+        cout << "Enter your name: ";
+        cin >> input_name;
+        cout << "Enter your password: ";
+        cin >> input_password;
 
-   string line;
-    while (getline(inFile, line)) {
-        size_t pos = line.find(":");
-        if (pos != string::npos) {
-            string storedName = line.substr(6, pos - 6); // Extract stored name
-            string storedPassword = line.substr(pos + 1); // Extract stored password
+        ifstream inFile("Admin_data.txt");
+        if (!inFile)
+        {
+            cerr << "Error opening file." << endl;
+            return;
+        }
 
-            if (input_name == storedName && input_password == storedPassword) {
-                cout << "Welcome, " << input_name << "! Access granted." << endl;
-                return;
+        string line;
+        while (getline(inFile, line))
+        {
+            size_t pos = line.find(":");
+            if (pos != string::npos)
+            {
+                string storedName = line.substr(6, pos - 6);  // Extract stored name
+                string storedPassword = line.substr(pos + 1); // Extract stored password
+
+                if (input_name == storedName && input_password == storedPassword)
+                {
+                    cout << "Welcome, " << input_name << "! Access granted." << endl;
+                    return;
+                }
             }
         }
+
+        cout << "Access denied. User not found or incorrect credentials." << endl;
     }
-
-    cout << "Access denied. User not found or incorrect credentials." << endl;
-}
-
-    
 };
 
 int main()
 {
 
-    customer c1;
-     c1.get_customer_data();
+    // customer c1;
+    //  c1.get_customer_data();
     // c1.put_customer_data();
 
     // c1.show_all_customer_data();
 
     //  c1.show_customer_data();
 
-    // Employee e1;
-    // e1.get_employee_data();
+    Employee e1;
+    e1.get_employee_data();
 
     // e1.put_employee_data();
 

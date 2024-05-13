@@ -1,1 +1,2 @@
- c1.get_customer_data();
+ Employee e1;
+    e1.get_employee_data();
