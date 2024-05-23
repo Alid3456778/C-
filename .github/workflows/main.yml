@@ -1,0 +1,31 @@
+name:CI pipline
+
+on:
+    push:
+     branches :
+        -main
+
+
+jobs:
+build:
+runs-on: ubuntu-latest
+
+steps:
+-name: Checkout Repo
+uses: actions/checkout@v2
+
+-name: Install The C++ 
+uses: sudo apt-get update && sudo apt-get install -y g++
+
+-name: Build main Program
+uses: g++ -o my_program gym_project.cpp
+
+-name: Rum main Program
+uses: ./my_program
+
+- name: Archive Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: MyProgramExecutable
+        path: my_program
+
