@@ -1,4 +1,4 @@
-name:CI pipline
+name: CI pipline
 
 on:
     push:
