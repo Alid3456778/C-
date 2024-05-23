@@ -20,7 +20,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y g++
 
     - name: Build Main Program
-      run: g++ -o my_program gym_project.cpp
+      run: g++ -o my_program ./gym_project.cpp
 
     - name: Run Main Program
       run: ./my_program
