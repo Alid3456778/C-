@@ -1,31 +1,32 @@
-name: CI pipline
+name: CI Pipeline
 
 on:
-    push:
-     branches :
-        -main
-
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-build:
-runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-steps:
--name: Checkout Repo
-uses: actions/checkout@v2
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
--name: Install The C++ 
-uses: sudo apt-get update && sudo apt-get install -y g++
+    - name: Install GNU C++ Compiler
+      run: sudo apt-get update && sudo apt-get install -y g++
 
--name: Build main Program
-uses: g++ -o my_program gym_project.cpp
+    - name: Build Main Program
+      run: g++ -o my_program main.cpp
 
--name: Rum main Program
-uses: ./my_program
+    - name: Run Main Program
+      run: ./my_program
 
-- name: Archive Build Artifacts
+    - name: Archive Build Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: MyProgramExecutable
         path: my_program
-
