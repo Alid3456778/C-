@@ -23,6 +23,7 @@ jobs:
       run: g++ -o my_program ./Project/gym_project.cpp
 
     - name: Run Main Program
+      timeout-minutes: 3
       run: ./my_program
 
     - name: Archive Build Artifacts
